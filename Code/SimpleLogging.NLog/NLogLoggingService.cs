@@ -133,7 +133,7 @@ namespace SimpleLogging.NLog
             }
         }
 
-        public void Warn(string message)
+        public void Warning(string message)
         {
             if (Logger != null && Logger.IsWarnEnabled)
             {
@@ -141,7 +141,7 @@ namespace SimpleLogging.NLog
             }
         }
 
-        public void Warn(string message, params object[] args)
+        public void Warning(string message, params object[] args)
         {
             if (Logger != null && Logger.IsWarnEnabled)
             {
