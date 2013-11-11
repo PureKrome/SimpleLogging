@@ -36,6 +36,9 @@
     <!-- A reference to the entire .NET Framework is automatically included -->
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Shared Assembly Info\SharedAssemblyInfo.cs">
+      <Link>Properties\SharedAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="ILoggingService.cs" />
     <Compile Include="LogLevelType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

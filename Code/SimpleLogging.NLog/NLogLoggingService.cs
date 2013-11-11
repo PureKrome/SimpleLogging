@@ -209,27 +209,6 @@ namespace SimpleLogging.NLog
         #endregion
 
         /// <summary>
-        ///     This remembers any confuration data defined in a nlog.config file.
-        /// </summary>
-        private void RememberExistingFileConfiguration()
-        {
-            if (LogManager.Configuration == null)
-            {
-                return;
-            }
-
-            if (LogManager.Configuration.AllTargets != null)
-            {
-                _allTargets = LogManager.Configuration.AllTargets;
-            }
-
-            if (LogManager.Configuration.LoggingRules != null)
-            {
-                _loggingRules = LogManager.Configuration.LoggingRules;
-            }
-        }
-
-        /// <summary>
         ///     Adds or updates an NLog Viewer Target.
         /// </summary>
         /// <remarks>
@@ -318,6 +297,27 @@ namespace SimpleLogging.NLog
             LogManager.Configuration.LoggingRules.Add(loggingRule);
 
             LogManager.ReconfigExistingLoggers();
+        }
+
+        /// <summary>
+        ///     This remembers any confuration data defined in a nlog.config file.
+        /// </summary>
+        private void RememberExistingFileConfiguration()
+        {
+            if (LogManager.Configuration == null)
+            {
+                return;
+            }
+
+            if (LogManager.Configuration.AllTargets != null)
+            {
+                _allTargets = LogManager.Configuration.AllTargets;
+            }
+
+            if (LogManager.Configuration.LoggingRules != null)
+            {
+                _loggingRules = LogManager.Configuration.LoggingRules;
+            }
         }
 
         private void AddExistingTargetsAndRules()

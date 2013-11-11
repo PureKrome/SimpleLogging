@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+    <metadata>
+        <id>SimpleLogging.Core</id>
+        <version>0.0.1</version>
+        <title>SimpleLogging.Core: making logging ... simple!</title>
+        <authors>Justin Adler</authors>
+        <owners>Justin Adler</owners>
+        <projectUrl>https://github.com/PureKrome/SimpleLogging</projectUrl>
+        <iconUrl>http://i.imgur.com/bR4Yf.jpg</iconUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>SimpleLogging is a lite and tiny package to help logging in any .NET application.
+        
+        This core library is a Portable Class Library. It's also mainly just some common framework for other
+SimpleLogging packages - which is really what you should be using.</description>
+        <summary>A really simple way to log any messages from your .NET application.</summary>
+        <releaseNotes />
+        <copyright>2013</copyright>
+        <language>en-au</language>
+        <tags>simple logging logger log diagnostic unicorn magicalunicorn magical-unicorn worlddomination worldomination</tags>
+    </metadata>
+    <files>
+        <file src="..\Code\SimpleLogging.Core\bin\Release\SimpleLogging.Core.dll" target="lib\portable-net4+sl4+wp7+win8\SimpleLogging.Core.dll" />
+    </files>
+</package>

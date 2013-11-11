@@ -14,6 +14,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleLogging.NLog", "Code\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleLogging.Tests", "Code\SimpleLogging.Tests\SimpleLogging.Tests.csproj", "{CC0FF46D-5B84-488C-A170-2C69A5B78D6C}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared Assembly Info", "Shared Assembly Info", "{58A6CE2A-C38B-4354-B510-7E9A5EFB0D16}"
+	ProjectSection(SolutionItems) = preProject
+		Code\Shared Assembly Info\SharedAssemblyInfo.cs = Code\Shared Assembly Info\SharedAssemblyInfo.cs
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
