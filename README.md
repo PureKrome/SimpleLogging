@@ -1,0 +1,4 @@
+SimpleLogging
+=============
+
+Logging - made simple.
