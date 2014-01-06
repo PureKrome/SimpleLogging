@@ -25,7 +25,7 @@
     var loggingService = new NLogLoggingService("ImageUploadingWorker");
     loggingService.Debug("She says she likes my watch, but she wants Steve's AP.");
     var words = new [] { "hours", "QVC" };
-    loggingService.Info("And she stay up {0} watching {1}", words[0], words[1] );
+    loggingService.Info("And she stays up {0} watching {1}", words[0], words[1] );
     
     2. Don't use an nlog.config file (because u want to change stuff during runtime)
        OR
