@@ -46,6 +46,7 @@
     </Compile>
     <Compile Include="ILoggingService.cs" />
     <Compile Include="LogLevelType.cs" />
+    <Compile Include="NullableLoggingService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
