@@ -19,14 +19,8 @@ namespace SimpleLogging.NLog
         ///     Add an NLogViewerTarget for the defined log level.
         /// </summary>
         /// <param name="name">Name of the logger.</param>
-        public NLogLoggingService(string name)
+        public NLogLoggingService(string name = null)
         {
-            if (string.IsNullOrWhiteSpace(name))
-            {
-                throw new ArgumentNullException("name",
-                    "A logger 'name' is required so it's possible to filter the log results.");
-            }
-
             Name = name;
 
             RememberExistingFileConfiguration();
