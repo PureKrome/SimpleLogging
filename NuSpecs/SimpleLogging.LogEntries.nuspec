@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+    <metadata>
+        <id>SimpleLogging.LogEntries</id>
+        <version>0.2.0</version>
+        <title>SimpleLogging.LogEntries: an NLog logging service LogEntries (http://www.LogEntries.com).</title>
+        <authors>Justin Adler</authors>
+        <owners>Justin Adler</owners>
+        <projectUrl>https://github.com/PureKrome/SimpleLogging</projectUrl>
+        <iconUrl>http://i.imgur.com/bR4Yf.jpg</iconUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>Used with SimpleLogging, this provides you with a quick, simple and easy way to log messages with NLog.
+        
+A common use of this is to send messages to an NLog viewer like Sentinel to get live (streamed) logging messages.
+
+Also includes a simple way to programatically turn on/off an NLogViewTarget, which is awesome when used in an Azure role :)</description>
+        <summary>Leverage NLog off the SimpleLogging framework for LogEntries.</summary>
+        <releaseNotes />
+        <copyright>2013</copyright>
+        <language>en-au</language>
+        <tags>simple logging logger log nlog diagnostic unicorn magicalunicorn magical-unicorn worlddomination worldomination</tags>
+        <dependencies>
+            <dependency id="SimpleLogging.NLog" version="0.2.0" />
+            <dependency id="LogEntries.NLog" version="2.2.0" />
+        </dependencies>
+    </metadata>
+    <files />
+</package>
