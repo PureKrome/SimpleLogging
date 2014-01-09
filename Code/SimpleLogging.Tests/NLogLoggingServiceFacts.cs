@@ -9,10 +9,31 @@ namespace SimpleLogging.Tests
 {
     public class NLogLoggingServiceFacts
     {
+        public class ConfigureNLogViewTargetFacts
+        {
+            [Fact]
+            public void GivenAnAddress_ConfigureNLogViewTarget_ReconfiguresTheLoggerSucessfully()
+            {
+                // Arrange.
+                var service = new NLogLoggingService("blah");
+                LogManager.Configuration.ShouldBe(null);
+
+                // Act.
+                service.ConfigureNLogViewerTarget("udp://1.2.3.4:9999");
+
+                // Assert.
+                LogManager.Configuration.ShouldNotBe(null);
+                LogManager.Configuration.AllTargets.ShouldNotBeEmpty();
+                LogManager.Configuration.AllTargets.Count.ShouldBe(2);
+                LogManager.Configuration.LoggingRules.ShouldNotBeEmpty();
+                LogManager.Configuration.LoggingRules.Count.ShouldBe(1);
+            }
+        }
+
         public class ConstructorFacts
         {
             [Fact]
-            public void GivenANameOnly_Constructor_IsInstantiatedWithANullLogger()
+            public void GivenANameOnly_Constructor_IsInstantiatedWithALogger()
             {
                 // Arrange.
                 const string name = "blah";
@@ -71,16 +92,16 @@ namespace SimpleLogging.Tests
             }
 
             [Fact]
-            public void GivenANullName_Constructor_ThrowsAnException()
+            public void GivenANullName_Constructor_IsInstantiated()
             {
                 // Arrange.
 
                 // Act.
-                var exception = Should.Throw<ArgumentNullException>(() => new NLogLoggingService(null));
+                var service = new NLogLoggingService();
 
                 // Assert.
-                exception.ShouldNotBe(null);
-                exception.Message.ShouldBe("A logger 'name' is required so it's possible to filter the log results.\r\nParameter name: name");
+                service.ShouldNotBe(null);
+                service.Name.ShouldBe(null);
             }
 
             [Fact]
@@ -94,27 +115,6 @@ namespace SimpleLogging.Tests
                 // Assert.
                 exception.ShouldNotBe(null);
                 exception.Message.ShouldBe("Value cannot be null.\r\nParameter name: address");
-            }
-        }
-
-        public class ConfigureNLogViewTargetFacts
-        {
-            [Fact]
-            public void GivenAnAddress_ConfigureNLogViewTarget_ReconfiguresTheLoggerSucessfully()
-            {
-                // Arrange.
-                var service = new NLogLoggingService("blah");
-                LogManager.Configuration.ShouldBe(null);
-
-                // Act.
-                service.ConfigureNLogViewerTarget("udp://1.2.3.4:9999");
-
-                // Assert.
-                LogManager.Configuration.ShouldNotBe(null);
-                LogManager.Configuration.AllTargets.ShouldNotBeEmpty();
-                LogManager.Configuration.AllTargets.Count.ShouldBe(2);
-                LogManager.Configuration.LoggingRules.ShouldNotBeEmpty();
-                LogManager.Configuration.LoggingRules.Count.ShouldBe(1);
             }
         }
     }

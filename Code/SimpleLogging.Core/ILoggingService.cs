@@ -7,7 +7,11 @@ namespace SimpleLogging.Core
         /// <summary>
         ///     Every logger should have a name :)
         /// </summary>
+        /// <remarks>If this is null AND you haven't set it, then this is auto determined via the stackFrame recusing up until it finds a non SimpleLogging method and not a System method/property.</remarks>
         string Name { get; }
+
+        void Trace(string message);
+        void Trace(string message, params object[] args);
 
         void Debug(string message);
         void Debug(string message, params object[] args);

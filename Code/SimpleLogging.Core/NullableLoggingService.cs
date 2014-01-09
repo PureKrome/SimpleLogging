@@ -13,6 +13,16 @@ namespace SimpleLogging.Core
 
         public string Name { get; private set; }
 
+        public void Trace(string message)
+        {
+            
+        }
+
+        public void Trace(string message, params object[] args)
+        {
+            
+        }
+
         public void Debug(string message)
         {
         }

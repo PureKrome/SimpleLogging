@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using NLog;
 using NLog.Config;
 using NLog.Targets;
@@ -21,7 +22,11 @@ namespace SimpleLogging.NLog
         /// <param name="name">Name of the logger.</param>
         public NLogLoggingService(string name = null)
         {
-            Name = name;
+            // If no name was provided, then we use the name of calling class.
+            if (!string.IsNullOrWhiteSpace(name))
+            {
+                Name = name;
+            }
 
             RememberExistingFileConfiguration();
         }
@@ -83,10 +88,14 @@ namespace SimpleLogging.NLog
             get
             {
                 // Lazy loading - no need to sync lock, cause this is only for this object-instance .. not the entire application.
+                // NOTE: we need to skip 2 frames.
+                //       1st frame (frame 0) == get_logger.
+                //       2nd frame (frame 1) == Debug/Info/etc methods
+                //       3rd frame (frame 2) == <light weight .. no idea what this is>
                 return _log ??
                        (_log =
                            (string.IsNullOrEmpty(Name)
-                               ? LogManager.GetCurrentClassLogger()
+                               ? NLogExtensions.GetCurrentClassLogger(2)
                                : LogManager.GetLogger(Name)));
             }
         }
@@ -94,6 +103,22 @@ namespace SimpleLogging.NLog
         #region Implementation of ILoggingService
 
         public string Name { get; private set; }
+
+        public void Trace(string message)
+        {
+            if (Logger != null && Logger.IsTraceEnabled)
+            {
+                Logger.Trace(message);
+            }
+        }
+
+        public void Trace(string message, params object[] args)
+        {
+            if (Logger != null && Logger.IsTraceEnabled)
+            {
+                Logger.Trace(message, args);
+            }
+        }
 
         public void Debug(string message)
         {
