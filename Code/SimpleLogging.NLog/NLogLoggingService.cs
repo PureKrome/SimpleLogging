@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
 using NLog;
 using NLog.Config;
 using NLog.Targets;
@@ -12,9 +9,7 @@ namespace SimpleLogging.NLog
 {
     public class NLogLoggingService : ILoggingService
     {
-        private ReadOnlyCollection<Target> _allTargets;
         private Logger _log;
-        private IList<LoggingRule> _loggingRules;
 
         /// <summary>
         ///     Add an NLogViewerTarget for the defined log level.
@@ -28,7 +23,7 @@ namespace SimpleLogging.NLog
                 Name = name;
             }
 
-            RememberExistingFileConfiguration();
+            //RememberExistingFileConfiguration();
         }
 
         /// <summary>
@@ -43,7 +38,11 @@ namespace SimpleLogging.NLog
         ///     Optional: Trace, Debug, Info, Warning, Error, Fatal, Off. If you make a type, then it
         ///     defaults to Off.
         /// </param>
-        public NLogLoggingService(string name, string address, string minimumLogLevel = "debug") : this(name)
+        /// <param name="isAsync">Will the nLog viewer target be async or not?</param>
+        public NLogLoggingService(string name, string address,
+            string minimumLogLevel = "debug",
+            bool isAsync = true)
+            : this(name)
         {
             if (string.IsNullOrWhiteSpace(address))
             {
@@ -55,7 +54,7 @@ namespace SimpleLogging.NLog
                 throw new ArgumentNullException("minimumLogLevel");
             }
 
-            ConfigureNLogViewerTarget(address, minimumLogLevel);
+            ConfigureNLogViewerTarget(address, minimumLogLevel, isAsync);
         }
 
         /// <summary>
@@ -67,7 +66,10 @@ namespace SimpleLogging.NLog
         ///     Optional: Trace, Debug, Info, Warning, Error, Fatal, Off. If you make a type, then it
         ///     defaults to Off.
         /// </param>
-        public NLogLoggingService(string name, NLogViewerTarget target, string minimumLogLevel = "debug")
+        /// <param name="isAsync">Will the nLog viewer target be async or not?</param>
+        public NLogLoggingService(string name, NLogViewerTarget target,
+            string minimumLogLevel = "debug",
+            bool isAsync = true)
             : this(name)
         {
             if (target == null)
@@ -80,7 +82,7 @@ namespace SimpleLogging.NLog
                 throw new ArgumentNullException("minimumLogLevel");
             }
 
-            ConfigureNLogViewerTarget(target, minimumLogLevel);
+            ConfigureNLogViewerTarget(target, minimumLogLevel, isAsync);
         }
 
         protected Logger Logger
@@ -245,8 +247,11 @@ namespace SimpleLogging.NLog
         ///     Optional: Trace, Debug, Info, Warning, Error, Fatal, Off. If you make a type, then it
         ///     defaults to Off.
         /// </param>
+        /// <param name="isAsync">Will the nLog viewer target be async or not?</param>
         /// <see cref="https://github.com/nlog/NLog/wiki/NLogViewer-target" />
-        public void ConfigureNLogViewerTarget(string address, string minimumLogLevel = "debug")
+        public void ConfigureNLogViewerTarget(string address,
+            string minimumLogLevel = "debug",
+            bool isAsync = true)
         {
             if (string.IsNullOrWhiteSpace(address))
             {
@@ -260,12 +265,12 @@ namespace SimpleLogging.NLog
 
             var target = new NLogViewerTarget
             {
-                Name = "nLogViewerTarget-" + Guid.NewGuid(),
+                Name = "SimpleLogging-nLogViewerTarget-" + DateTime.Now.Ticks,
                 Address = address,
                 IncludeNLogData = false
             };
 
-            ConfigureNLogViewerTarget(target, minimumLogLevel);
+            ConfigureNLogViewerTarget(target, minimumLogLevel, isAsync);
         }
 
         /// <summary>
@@ -283,10 +288,13 @@ namespace SimpleLogging.NLog
         ///     Optional: Trace, Debug, Info, Warning, Error, Fatal, Off. If you make a type, then it
         ///     defaults to Off.
         /// </param>
+        /// <param name="isAsync">Will the nLog viewer target be async or not?</param>
         /// <see cref="https://github.com/nlog/NLog/wiki/NLogViewer-target" />
-        public void ConfigureNLogViewerTarget(NLogViewerTarget target, string minimumLogLevel = "debug")
+        public void ConfigureNLogViewerTarget(NLogViewerTarget target,
+            string minimumLogLevel = "debug",
+            bool isAsync = true)
         {
-            // Code Reference: http://stackoverflow.com/questions/7471490/add-enable-and-disable-nlog-loggers-programmatically</remarks>
+            // Code Reference: http://stackoverflow.com/questions/7471490/add-enable-and-disable-nlog-loggers-programmatically
 
             if (target == null)
             {
@@ -298,66 +306,39 @@ namespace SimpleLogging.NLog
                 throw new ArgumentNullException("minimumLogLevel");
             }
 
-            LogManager.Configuration = new LoggingConfiguration();
+            if (LogManager.Configuration == null)
+            {
+                LogManager.Configuration = new LoggingConfiguration();
+            }
 
-            // Make sure we don't foget about our 'default' values.
-            AddExistingTargetsAndRules();
+            Target loggingRuleTarget;
 
+            if (isAsync)
+            {
+                var originalTargetName = target.Name;
+                // Just trying to stick with the naming conventions.
+                target.Name = target.Name + "_Wrapped";
 
-            // We need to make sure we wrap the target in an Async Target Wrapper.
-            var asyncWrapperTarget = new AsyncTargetWrapper(target);
-            LogManager.Configuration.AddTarget("asyncWrapperTarget-" + Guid.NewGuid(), asyncWrapperTarget);
-
+                // We need to make sure we wrap the target in an Async Target Wrapper.
+                loggingRuleTarget = new AsyncTargetWrapper(target)
+                {
+                    Name = originalTargetName
+                };
+                LogManager.Configuration.AddTarget(originalTargetName, loggingRuleTarget);
+            }
+            else
+            {
+                loggingRuleTarget = target;
+            }
 
             LogLevelType logLevel;
             Enum.TryParse(minimumLogLevel, true, out logLevel);
 
-            var loggingRule = new LoggingRule("*", TryParseToLogLevel(logLevel), asyncWrapperTarget);
+            var loggingRule = new LoggingRule("*", TryParseToLogLevel(logLevel), loggingRuleTarget);
             LogManager.Configuration.LoggingRules.Add(loggingRule);
 
+            // Make sure all the loggers are refreshed and re-configured nicely.
             LogManager.ReconfigExistingLoggers();
-        }
-
-        /// <summary>
-        ///     This remembers any confuration data defined in a nlog.config file.
-        /// </summary>
-        private void RememberExistingFileConfiguration()
-        {
-            if (LogManager.Configuration == null)
-            {
-                return;
-            }
-
-            if (LogManager.Configuration.AllTargets != null)
-            {
-                _allTargets = LogManager.Configuration.AllTargets;
-            }
-
-            if (LogManager.Configuration.LoggingRules != null)
-            {
-                _loggingRules = LogManager.Configuration.LoggingRules;
-            }
-        }
-
-        private void AddExistingTargetsAndRules()
-        {
-            if (_allTargets == null)
-            {
-                return;
-            }
-
-            foreach (Target target in _allTargets)
-            {
-                LogManager.Configuration.AddTarget(target.Name, target);
-            }
-
-            if (_loggingRules != null)
-            {
-                foreach (LoggingRule loggingRule in _loggingRules)
-                {
-                    LogManager.Configuration.LoggingRules.Add(loggingRule);
-                }
-            }
         }
 
         private static LogLevel TryParseToLogLevel(LogLevelType logLevelType)

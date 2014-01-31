@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<nlog xmlns="http://www.nlog-project.org/schemas/NLog.xsd"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      autoReload="true"
+      throwExceptions="true">
+
+    <!-- NLog example: https://github.com/nlog/nlog/wiki/Examples -->
+    <targets async="true">
+
+        <target name="gmail" xsi:type="Mail"
+            smtpServer="smtp.gmail.com"
+            smtpPort="587"
+            smtpAuthentication="Basic"
+            smtpUserName="user@gmail.com"
+            smtpPassword="password"
+            enableSsl="true"
+            from="emailaddress@gmail.com"
+            to="recipient@example.com"
+            cc="alice@example.com;bob@example.com;charlie@example.com"
+          />
+
+        <!-- A local host target for the SENTINAL app (http://http://sentinel.codeplex.com/) -->
+        <target xsi:type="NLogViewer"
+                name="sentinal"
+                address="udp://127.0.0.1:9999" />
+    </targets>
+
+    <rules>
+        <logger name="*" minlevel="Trace" writeTo="gmail"/>
+        <logger name="*" minlevel="Trace" writeTo="sentinal"/>
+    </rules>
+
+</nlog>

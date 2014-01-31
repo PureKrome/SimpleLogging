@@ -1,5 +1,6 @@
 ﻿using System;
 using NLog;
+using NLog.Config;
 using NLog.Targets;
 using Shouldly;
 using SimpleLogging.NLog;
@@ -27,6 +28,75 @@ namespace SimpleLogging.Tests
                 LogManager.Configuration.AllTargets.Count.ShouldBe(2);
                 LogManager.Configuration.LoggingRules.ShouldNotBeEmpty();
                 LogManager.Configuration.LoggingRules.Count.ShouldBe(1);
+            }
+
+            [Fact]
+            public void GivenAnExistingAsyncNLogFileAndAnAddress_ConfigureNLogViewTarget_ReusesTheExistingTargetAndRules()
+            {
+                // Arrange.
+                var service = new NLogLoggingService("blah");
+                var config = new XmlLoggingConfiguration("Sample-nLog-Async-Config.xml");
+                LogManager.Configuration = config;
+                LogManager.Configuration.ShouldNotBe(null);
+                LogManager.Configuration.AllTargets.ShouldNotBeEmpty();
+                LogManager.Configuration.AllTargets.Count.ShouldBe(4);
+                LogManager.Configuration.LoggingRules.ShouldNotBeEmpty();
+                LogManager.Configuration.LoggingRules.Count.ShouldBe(2);
+
+                // Act.
+                service.ConfigureNLogViewerTarget("udp://1.2.3.4:9999");
+
+                LogManager.Configuration.ShouldNotBe(null);
+                LogManager.Configuration.AllTargets.ShouldNotBeEmpty();
+                LogManager.Configuration.AllTargets.Count.ShouldBe(6);
+                LogManager.Configuration.LoggingRules.ShouldNotBeEmpty();
+                LogManager.Configuration.LoggingRules.Count.ShouldBe(3);
+            }
+
+            [Fact]
+            public void GivenAnExistingNLogFileAndAnAddress_ConfigureNLogViewTarget_ReusesTheExistingTargetAndRules()
+            {
+                // Arrange.
+                var service = new NLogLoggingService("blah");
+                var config = new XmlLoggingConfiguration("Sample-nLog-Config.xml");
+                LogManager.Configuration = config;
+                LogManager.Configuration.ShouldNotBe(null);
+                LogManager.Configuration.AllTargets.ShouldNotBeEmpty();
+                LogManager.Configuration.AllTargets.Count.ShouldBe(2);
+                LogManager.Configuration.LoggingRules.ShouldNotBeEmpty();
+                LogManager.Configuration.LoggingRules.Count.ShouldBe(2);
+
+                // Act.
+                service.ConfigureNLogViewerTarget("udp://1.2.3.4:9999", isAsync: false);
+
+                LogManager.Configuration.ShouldNotBe(null);
+                LogManager.Configuration.AllTargets.ShouldNotBeEmpty();
+                LogManager.Configuration.AllTargets.Count.ShouldBe(3);
+                LogManager.Configuration.LoggingRules.ShouldNotBeEmpty();
+                LogManager.Configuration.LoggingRules.Count.ShouldBe(3);
+            }
+
+            [Fact]
+            public void GivenAnExistingAsyncNLogFileAndAnAddressButNotAsyncTheNewTarget_ConfigureNLogViewTarget_ReusesTheExistingTargetAndRules()
+            {
+                // Arrange.
+                var service = new NLogLoggingService("blah");
+                var config = new XmlLoggingConfiguration("Sample-nLog-Async-Config.xml");
+                LogManager.Configuration = config;
+                LogManager.Configuration.ShouldNotBe(null);
+                LogManager.Configuration.AllTargets.ShouldNotBeEmpty();
+                LogManager.Configuration.AllTargets.Count.ShouldBe(4);
+                LogManager.Configuration.LoggingRules.ShouldNotBeEmpty();
+                LogManager.Configuration.LoggingRules.Count.ShouldBe(2);
+
+                // Act.
+                service.ConfigureNLogViewerTarget("udp://1.2.3.4:9999", isAsync: false);
+
+                LogManager.Configuration.ShouldNotBe(null);
+                LogManager.Configuration.AllTargets.ShouldNotBeEmpty();
+                LogManager.Configuration.AllTargets.Count.ShouldBe(5);
+                LogManager.Configuration.LoggingRules.ShouldNotBeEmpty();
+                LogManager.Configuration.LoggingRules.Count.ShouldBe(3);
             }
         }
 
