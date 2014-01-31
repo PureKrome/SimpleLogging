@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>SimpleLogging.Core</id>
-        <version>0.2.1</version>
+        <version>0.3.0</version>
         <title>SimpleLogging.Core: making logging ... simple!</title>
         <authors>Justin Adler</authors>
         <owners>Justin Adler</owners>
@@ -14,7 +14,7 @@
         This core library is a Portable Class Library. It's also mainly just some common framework for other
 SimpleLogging packages - which is really what you should be using.</description>
         <summary>A really simple way to log any messages from your .NET application.</summary>
-        <releaseNotes>- Added Trace methods.</releaseNotes>
+        <releaseNotes />
         <copyright>2013</copyright>
         <language>en-au</language>
         <tags>simple logging logger log diagnostic unicorn magicalunicorn magical-unicorn worlddomination worldomination</tags>
