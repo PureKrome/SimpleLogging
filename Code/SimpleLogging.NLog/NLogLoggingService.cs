@@ -315,9 +315,12 @@ namespace SimpleLogging.NLog
 
             if (isAsync)
             {
-                var originalTargetName = target.Name;
+                var originalTargetName = string.IsNullOrWhiteSpace(target.Name)
+                        ? "unamed"
+                        : target.Name;
+                
                 // Just trying to stick with the naming conventions.
-                target.Name = target.Name + "_Wrapped";
+                target.Name = string.Format("{0}_Wrapped", originalTargetName);
 
                 // We need to make sure we wrap the target in an Async Target Wrapper.
                 loggingRuleTarget = new AsyncTargetWrapper(target)
