@@ -20,7 +20,7 @@ namespace SimpleLogging.Samples.MVC.Controllers
 
         public ActionResult Index()
         {
-            _loggingService.Trace("GetHome");
+            _loggingService.Trace("Index");
 
             _loggingService.Debug("Current DateTime: '{0}'", DateTime.UtcNow);
 
