@@ -1,4 +1,4 @@
-![Simple Logging - making logging ... simple!](http://i.imgur.com/GN1tLs6.png)
+![Simple Logging - making logging ... simple!](http://i.imgur.com/x2X3wir.png)
 ----
 **SimpleLogging** are a few .NET libraries that help making logging easier for your website/application.
 
