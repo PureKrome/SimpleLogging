@@ -6,22 +6,22 @@ using SimpleLogging.NLog;
 
 namespace SimpleLogging.Samples.MVC
 {
-    public static class DependencyResolutionConfig
+public static class DependencyResolutionConfig
+{
+    public static void RegisterContainers()
     {
-        public static void RegisterContainers()
-        {
-            var builder = new ContainerBuilder();
+        var builder = new ContainerBuilder();
 
-            // Register our services.
-            builder.Register(c => new NLogLoggingService())
-                .As<ILoggingService>();
+        // Register our services.
+        builder.Register(c => new NLogLoggingService())
+            .As<ILoggingService>();
 
-            // Register our controllers (so they will use constructor injection)
-            builder.RegisterControllers(typeof(MvcApplication).Assembly);
+        // Register our controllers (so they will use constructor injection)
+        builder.RegisterControllers(typeof(MvcApplication).Assembly);
 
-            var container = builder.Build();
+        var container = builder.Build();
 
-            DependencyResolver.SetResolver(new AutofacDependencyResolver(container));
-        }
+        DependencyResolver.SetResolver(new AutofacDependencyResolver(container));
     }
+}
 }
