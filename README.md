@@ -71,7 +71,7 @@ namespace SimpleLogging.Samples.MVC.Controllers
 }
 ```
 
-Step 5. Add an `NLog.config` file.
+Step 5. Add an `NLog.config` file.    
 *Note:* Add this new file to the root website / application folder.
 
 ```
