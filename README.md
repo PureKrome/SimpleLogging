@@ -1,4 +1,4 @@
-![Simple Logging - making logging ... simple!](http://i.imgur.com/GN1tLs6.png)
+![Simple Logging - making logging ... simple!](http://i.imgur.com/fRHaMFI.png)
 ----
 **SimpleLogging** are a few .NET libraries that help making logging easier for your website/application.
 
@@ -71,13 +71,10 @@ namespace SimpleLogging.Samples.MVC.Controllers
 }
 ```
 
-Step 5. Add an NLog file.
-
-Add this new file to the root website / application folder.
+Step 5. Add an `NLog.config` file.    
+*Note:* Add this new file to the root website / application folder.
 
 ```
-nlog.config    
-
 <?xml version="1.0" encoding="utf-8" ?>
 <nlog xmlns="http://www.nlog-project.org/schemas/NLog.xsd"
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
