@@ -186,17 +186,24 @@ namespace SimpleLogging.NLog
             }
         }
 
-        public void Error(Exception exception, string message = null)
+        public void Error(Exception exception, string message = null, bool isStackTraceIncluded = true)
         {
             if (Logger == null || !Logger.IsErrorEnabled)
             {
                 return;
             }
 
-            string errorMessage = string.Format("{0}{1}{2}",
-                string.IsNullOrWhiteSpace(message) ? string.Empty : message,
-                string.IsNullOrWhiteSpace(message) ? string.Empty : " Exception Message: ",
-                exception.Message);
+            string errorMessage = string.Format("{0}{1}{2}{3}",
+                string.IsNullOrWhiteSpace(message)
+                    ? string.Empty
+                    : message,
+                string.IsNullOrWhiteSpace(message)
+                    ? string.Empty
+                    : " Exception Message: ",
+                exception.Message,
+                isStackTraceIncluded
+                    ? string.Format(". Stack Trace: {0}", exception.StackTrace)
+                    : string.Empty);
 
             Error(errorMessage);
         }
@@ -217,12 +224,19 @@ namespace SimpleLogging.NLog
             }
         }
 
-        public void Fatal(Exception exception, string message = null)
+        public void Fatal(Exception exception, string message = null, bool isStackTraceIncluded = true)
         {
-            string errorMessage = string.Format("{0}{1}{2}",
-                string.IsNullOrWhiteSpace(message) ? string.Empty : message,
-                string.IsNullOrWhiteSpace(message) ? string.Empty : " Exception Message: ",
-                exception.Message);
+            string errorMessage = string.Format("{0}{1}{2}{3}",
+                string.IsNullOrWhiteSpace(message)
+                    ? string.Empty
+                    : message,
+                string.IsNullOrWhiteSpace(message)
+                    ? string.Empty
+                    : " Exception Message: ",
+                exception.Message,
+                isStackTraceIncluded
+                    ? string.Format(". Stack Trace: {0}", exception.StackTrace)
+                    : string.Empty);
 
             Fatal(errorMessage);
         }

@@ -55,7 +55,7 @@ namespace SimpleLogging.Core
         {
         }
 
-        public void Error(Exception exception, string message = null)
+        public void Error(Exception exception, string message = null, bool isStackTraceIncluded = true)
         {
         }
 
@@ -67,7 +67,7 @@ namespace SimpleLogging.Core
         {
         }
 
-        public void Fatal(Exception exception, string message = null)
+        public void Fatal(Exception exception, string message = null, bool isStackTraceIncluded = true)
         {
         }
     }

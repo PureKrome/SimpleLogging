@@ -24,10 +24,10 @@ namespace SimpleLogging.Core
 
         void Error(string message);
         void Error(string message, params object[] args);
-        void Error(Exception exception, string message = null);
+        void Error(Exception exception, string message = null, bool isStackTraceIncluded = true);
 
         void Fatal(string message);
         void Fatal(string message, params object[] args);
-        void Fatal(Exception exception, string message = null);
+        void Fatal(Exception exception, string message = null, bool isStackTraceIncluded = true);
     }
 }
