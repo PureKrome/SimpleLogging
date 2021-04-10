@@ -1,3 +1,9 @@
+# Archived - 10/04/2021
+
+NOTE: with .NET Core, logging has been solved (with `ILogger`, etc).
+
+---
+
 ![Simple Logging - making logging ... simple!](http://i.imgur.com/fRHaMFI.png)
 ----
 **SimpleLogging** are a few .NET libraries that help making logging easier for your website/application.
